@@ -2,6 +2,7 @@
 using Prism.Mvvm;
 using processes_list.Models;
 using System;
+using System.Timers;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -12,6 +13,8 @@ namespace processes_list.ViewModels
     public class ProcessesListViewModel : BindableBase
     {
         private ObservableCollection<ProcessModel> _processes;
+        private int _refreshIntervalInSeconds = 5;
+        private Timer _refreshTimer;
 
         public ObservableCollection<ProcessModel> Processes
         {
@@ -22,12 +25,26 @@ namespace processes_list.ViewModels
         public ProcessesListViewModel()
         {
             _processes = new ObservableCollection<ProcessModel>(LoadProcesses());
+            StartProcessesRefreshTimer();
         }
 
         private List<ProcessModel> LoadProcesses()
         {
             System.Diagnostics.Debug.WriteLine($"[DEBUG] Loading processes");
             return Process.GetProcesses().Select(p => new ProcessModel(p)).ToList();
+        }
+
+        private void OnRefresh(object source, ElapsedEventArgs e)
+        {
+            System.Diagnostics.Debug.WriteLine($"[DEBUG] Refreshing");
+            Processes = new ObservableCollection<ProcessModel>(LoadProcesses());
+        }
+
+        private void StartProcessesRefreshTimer()
+        {
+            _refreshTimer = new Timer(_refreshIntervalInSeconds * 1000) { AutoReset = true };
+            _refreshTimer.Elapsed += OnRefresh;
+            _refreshTimer.Start();
         }
     }
 }

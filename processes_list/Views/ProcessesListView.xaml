@@ -6,14 +6,48 @@
              xmlns:prism="http://prismlibrary.com/"             
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d"
-             d:DesignHeight="350" d:DesignWidth="525">
+             d:DesignHeight="350"
+             d:DesignWidth="525"
+             Background="#282A36">
+    <UserControl.Resources>
+        <Storyboard x:Key="FadeInOutAnimation">
+            <DoubleAnimation
+            Storyboard.TargetProperty="Opacity"
+            From="1.0" To="0.0" Duration="0:0:0.2"
+            AutoReverse="True"/>
+        </Storyboard>
+        <Style x:Key="ButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#44475A"/>
+            <Setter Property="Foreground" Value="#F8F8F2"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Style.Triggers>
+                <EventTrigger RoutedEvent="Button.Click">
+                    <BeginStoryboard Storyboard="{StaticResource FadeInOutAnimation}" />
+                </EventTrigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Foreground" Value="#FF5555"/>
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Foreground" Value="#FF5555"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <ControlTemplate x:Key="GenerationsTemplate" TargetType="{x:Type ContentControl}">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Generations: " Foreground="#8BE9FD" FontSize="14" />
+                <TextBlock Text="{Binding Generations}" Foreground="#F8F8F2" FontSize="14" />
+            </StackPanel>
+        </ControlTemplate>
+    </UserControl.Resources>
     <Grid>
         <ListView Name="ProcessesList" 
                   ItemsSource="{Binding Processes}"
                   SelectionMode="Single"
                   Grid.Column="0"
-                  Background="#282A36"
-                  Foreground="#F8F8F2">
+                  Background="#44475A"
+                  Foreground="#F8F8F2" Margin="200,0,0,0">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="ID" DisplayMemberBinding="{Binding Id}" />
@@ -22,5 +56,10 @@
                 </GridView>
             </ListView.View>
         </ListView>
+        <Button Style="{StaticResource ButtonStyle}" Foreground="#8BE9FD" Content="Refresh" HorizontalAlignment="Left" VerticalAlignment="Top" Height="40" Width="160" Click="Button_Click"/>
+        <Button Style="{StaticResource ButtonStyle}" Foreground="#50FA7B" Content="Start Refreshing" HorizontalAlignment="Left" VerticalAlignment="Top" Height="40" Width="160" Click="Button_Click" Margin="0,40,0,0"/>
+        <Button Style="{StaticResource ButtonStyle}" Foreground="#FF5555" Content="Stop Refreshing" HorizontalAlignment="Left" VerticalAlignment="Top" Height="40" Width="160" Click="Button_Click" Margin="0,80,0,0"/>
+        <Button Style="{StaticResource ButtonStyle}" Foreground="#F1FA8C" Content="Set Refresh Interval" HorizontalAlignment="Left" VerticalAlignment="Top" Height="40" Width="160" Click="Button_Click" Margin="0,160,0,0"/>
+        <TextBox HorizontalAlignment="Left" Margin="0,200,0,0" TextWrapping="Wrap" Text="5" VerticalAlignment="Top" Width="160" Height="40"/>
     </Grid>
 </UserControl>
