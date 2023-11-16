@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Windows;
 
 namespace processes_list.ViewModels
 {
@@ -36,8 +37,16 @@ namespace processes_list.ViewModels
 
         private void OnRefresh(object source, ElapsedEventArgs e)
         {
-            System.Diagnostics.Debug.WriteLine($"[DEBUG] Refreshing");
-            Processes = new ObservableCollection<ProcessModel>(LoadProcesses());
+            var updatedProcesses = LoadProcesses();
+
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                Processes.Clear();
+                foreach (var process in updatedProcesses)
+                {
+                    Processes.Add(process);
+                }
+            });
         }
 
         private void StartProcessesRefreshTimer()
