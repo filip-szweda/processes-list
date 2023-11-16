@@ -51,6 +51,13 @@ namespace processes_list.ViewModels
             }
         }
 
+        private ProcessModel _selectedProcess;
+
+        public ProcessModel SelectedProcess
+        {
+            get => _selectedProcess;
+            set => SetProperty(ref _selectedProcess, value);
+        }
 
         public ProcessesListViewModel()
         {
@@ -81,10 +88,16 @@ namespace processes_list.ViewModels
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
+                var currentSelectedProcessId = _selectedProcess?.Id;
                 Processes.Clear();
                 foreach (var process in processes)
                 {
                     Processes.Add(process);
+                }
+                if (currentSelectedProcessId.HasValue)
+                {
+                    var processToSelect = _processes.FirstOrDefault(p => p.Id == currentSelectedProcessId);
+                    SelectedProcess = processToSelect ?? null;
                 }
             });
         }

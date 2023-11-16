@@ -46,6 +46,7 @@
                   ItemsSource="{Binding Processes}"
                   SelectionMode="Single"
                   Grid.Column="0"
+                  SelectedItem="{Binding SelectedProcess}"
                   GridViewColumnHeader.Click="OnHeaderClick"
                   Background="#44475A"
                   Foreground="#F8F8F2" Margin="200,0,0,0">
