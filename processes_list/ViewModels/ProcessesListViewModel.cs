@@ -119,5 +119,31 @@ namespace processes_list.ViewModels
             _refreshTimer.Elapsed += OnRefresh;
             _refreshTimer.Start();
         }
+
+        public void SortBy(string column)
+        {
+            if (Processes == null || Processes.Count == 0)
+            {
+                return;
+            }
+
+            if (column == "ID")
+            {
+                Processes = new ObservableCollection<ProcessModel>(Processes.OrderBy(p => p.Id));
+                return;
+            }
+
+            if (column == "Name")
+            {
+                Processes = new ObservableCollection<ProcessModel>(Processes.OrderBy(p => p.Name));
+                return;
+            }
+
+            if (column == "Priority")
+            {
+                Processes = new ObservableCollection<ProcessModel>(Processes.OrderBy(p => p.Priority));
+                return;
+            }
+        }
     }
 }
