@@ -35,9 +35,22 @@ namespace processes_list.ViewModels
             set
             {
                 _textBoxContent = value;
-                RaisePropertyChanged(nameof(TextBoxContent)); // Notify the UI of the change
+                RaisePropertyChanged(nameof(TextBoxContent));
             }
         }
+
+        private string _processFilter;
+        public string ProcessFilter
+        {
+            get { return _processFilter; }
+            set
+            {
+                _processFilter = value;
+                FilterProcesses(Processes.ToList());
+                RaisePropertyChanged(nameof(ProcessFilter));
+            }
+        }
+
 
         public ProcessesListViewModel()
         {
@@ -64,18 +77,34 @@ namespace processes_list.ViewModels
             return Process.GetProcesses().Select(p => new ProcessModel(p)).ToList();
         }
 
-        private void RefreshProcesses()
+        private void DispatchProcesses(List<ProcessModel> processes)
         {
-            var updatedProcesses = LoadProcesses();
-
             Application.Current.Dispatcher.Invoke(() =>
             {
                 Processes.Clear();
-                foreach (var process in updatedProcesses)
+                foreach (var process in processes)
                 {
                     Processes.Add(process);
                 }
             });
+        }
+
+        private void FilterProcesses(List<ProcessModel> processes)
+        {
+            var filteredProcesses = processes;
+
+            if (!string.IsNullOrEmpty(ProcessFilter))
+            {
+                filteredProcesses = processes.Where(p => p.Name.Contains(ProcessFilter)).ToList();
+            }
+
+            DispatchProcesses(filteredProcesses);
+        }
+
+        private void RefreshProcesses()
+        {
+            var processes = LoadProcesses();
+            FilterProcesses(processes);
         }
 
         private void OnRefresh(object source, ElapsedEventArgs e)
