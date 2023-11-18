@@ -6,7 +6,7 @@
              xmlns:prism="http://prismlibrary.com/" xmlns:views="clr-namespace:processes_list.Views"
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d"
-             d:DesignHeight="350"
+             d:DesignHeight="500"
              d:DesignWidth="525"
              Background="#282A36">
     <UserControl.Resources>

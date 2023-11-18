@@ -62,6 +62,8 @@
                 </ListView.View>
             </ListView>
             <Button Command="{Binding KillCommand}" Style="{StaticResource ButtonStyle}" HorizontalAlignment="Left" Foreground="#BD93F9" Content="Kill" Height="20" Width="185"/>
+            <Button Command="{Binding SetPriorityCommand}" Style="{StaticResource ButtonStyle}" HorizontalAlignment="Left" Foreground="#FFB86C" Content="Set Priority" Height="20" Width="185" />
+            <ComboBox ItemsSource="{Binding AccessiblePriorities}" SelectedItem="{Binding SelectedPriority}" HorizontalAlignment="Left" Height="20" Width="185"/>
         </StackPanel>
     </Grid>
 </UserControl>
