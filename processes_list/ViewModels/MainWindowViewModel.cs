@@ -5,6 +5,7 @@ namespace processes_list.ViewModels
     public class MainWindowViewModel : BindableBase
     {
         private string _title = "Prism Application";
+
         public string Title
         {
             get { return _title; }
@@ -13,7 +14,6 @@ namespace processes_list.ViewModels
 
         public MainWindowViewModel()
         {
-
         }
     }
 }

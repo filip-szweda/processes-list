@@ -12,12 +12,15 @@ namespace processes_list.ViewModels
 {
     public class ProcessDetailsViewModel : BindableBase
     {
+        private ProcessModel _selectedProcess;
+        private ProcessPriorityClass _selectedPriority;
+
         public ICommand KillCommand { get; private set; }
         public ICommand SetPriorityCommand { get; private set; }
         public List<ProcessPriorityClass> AccessiblePriorities { get; } = Enum.GetValues(typeof(ProcessPriorityClass)).Cast<ProcessPriorityClass>().ToList();
 
         public bool IsSelectedProcess => SelectedProcess != null;
-        private ProcessModel _selectedProcess;
+
         public ProcessModel SelectedProcess
         {
             get => _selectedProcess;
@@ -30,7 +33,6 @@ namespace processes_list.ViewModels
             }
         }
 
-        private ProcessPriorityClass _selectedPriority;
         public ProcessPriorityClass SelectedPriority
         {
             get => _selectedPriority;

@@ -2,11 +2,11 @@
 using Prism.Mvvm;
 using processes_list.Models;
 using System;
-using System.Timers;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Timers;
 using System.Windows;
 using System.Windows.Input;
 
@@ -14,8 +14,11 @@ namespace processes_list.ViewModels
 {
     public class ProcessesListViewModel : BindableBase
     {
-        private ObservableCollection<ProcessModel> _processes;
         private Timer _refreshTimer;
+        private ObservableCollection<ProcessModel> _processes;
+        private string _textBoxContent;
+        private string _processFilter;
+        private ProcessModel _selectedProcess;
 
         public ICommand RefreshCommand { get; private set; }
         public ICommand StartRefreshingCommand { get; private set; }
@@ -30,7 +33,6 @@ namespace processes_list.ViewModels
             set => SetProperty(ref _processes, value);
         }
 
-        private string _textBoxContent;
         public string TextBoxContent
         {
             get { return _textBoxContent; }
@@ -41,7 +43,6 @@ namespace processes_list.ViewModels
             }
         }
 
-        private string _processFilter;
         public string ProcessFilter
         {
             get { return _processFilter; }
@@ -52,8 +53,6 @@ namespace processes_list.ViewModels
                 RaisePropertyChanged(nameof(ProcessFilter));
             }
         }
-
-        private ProcessModel _selectedProcess;
 
         public ProcessModel SelectedProcess
         {
@@ -68,7 +67,7 @@ namespace processes_list.ViewModels
             StopRefreshingCommand = new DelegateCommand(() => _refreshTimer.Stop());
             SetRefreshIntervalCommand = new DelegateCommand(() =>
             {
-                System.Diagnostics.Debug.WriteLine($"[DEBUG] Setting processes refresh interval to {TextBoxContent}s");
+                Debug.WriteLine($"[DEBUG] Setting processes refresh interval to {TextBoxContent}s");
                 if (int.TryParse(TextBoxContent, out int parsedInterval))
                 {
                     int _refreshIntervalInSeconds = parsedInterval * 1000;
@@ -80,10 +79,41 @@ namespace processes_list.ViewModels
             InitializeProcessesRefreshTimer();
         }
 
+        private void InitializeProcessesRefreshTimer()
+        {
+            int _refreshIntervalInSeconds = 5;
+            _refreshTimer = new Timer(_refreshIntervalInSeconds * 1000) { AutoReset = true };
+            _refreshTimer.Elapsed += OnRefresh;
+            _refreshTimer.Start();
+        }
+
         private List<ProcessModel> LoadProcesses()
         {
-            System.Diagnostics.Debug.WriteLine($"[DEBUG] Loading processes");
+            Debug.WriteLine($"[DEBUG] Loading processes");
             return Process.GetProcesses().Select(p => new ProcessModel(p)).ToList();
+        }
+
+        private void RefreshProcesses()
+        {
+            var processes = LoadProcesses();
+            FilterProcesses(processes);
+        }
+
+        private void OnRefresh(object source, ElapsedEventArgs e)
+        {
+            RefreshProcesses();
+        }
+
+        private void FilterProcesses(List<ProcessModel> processes)
+        {
+            var filteredProcesses = processes;
+
+            if (!string.IsNullOrEmpty(ProcessFilter))
+            {
+                filteredProcesses = processes.Where(p => p.Name.Contains(ProcessFilter)).ToList();
+            }
+
+            DispatchProcesses(filteredProcesses);
         }
 
         private void DispatchProcesses(List<ProcessModel> processes)
@@ -102,37 +132,6 @@ namespace processes_list.ViewModels
                     SelectedProcess = processToSelect ?? null;
                 }
             });
-        }
-
-        private void FilterProcesses(List<ProcessModel> processes)
-        {
-            var filteredProcesses = processes;
-
-            if (!string.IsNullOrEmpty(ProcessFilter))
-            {
-                filteredProcesses = processes.Where(p => p.Name.Contains(ProcessFilter)).ToList();
-            }
-
-            DispatchProcesses(filteredProcesses);
-        }
-
-        private void RefreshProcesses()
-        {
-            var processes = LoadProcesses();
-            FilterProcesses(processes);
-        }
-
-        private void OnRefresh(object source, ElapsedEventArgs e)
-        {
-            RefreshProcesses();
-        }
-
-        private void InitializeProcessesRefreshTimer()
-        {
-            int _refreshIntervalInSeconds = 5;
-            _refreshTimer = new Timer(_refreshIntervalInSeconds * 1000) { AutoReset = true };
-            _refreshTimer.Elapsed += OnRefresh;
-            _refreshTimer.Start();
         }
 
         public void SortBy(string column)

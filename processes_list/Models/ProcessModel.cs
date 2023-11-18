@@ -26,7 +26,7 @@ namespace processes_list.Models
             Process = process;
             Id = process.Id;
             Name = process.ProcessName;
-            
+
             try
             {
                 Priority = process.PriorityClass;
@@ -36,6 +36,7 @@ namespace processes_list.Models
             {
                 PriorityString = e.Message;
             }
+
             try
             {
                 var startTime = process.StartTime;
@@ -45,6 +46,7 @@ namespace processes_list.Models
             {
                 StartTimeString = e.Message;
             }
+
             ThreadsNumber = process.Threads.Count;
             Threads = process.Threads;
         }
