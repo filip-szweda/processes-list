@@ -53,6 +53,14 @@
                 <Run Text="Threads: " Foreground="#F8F8F2" FontSize="14"/>
                 <Run Text="{Binding SelectedProcess.ThreadsNumber}" Foreground="#F8F8F2" FontSize="14"/>
             </TextBlock>
+            <ListView ItemsSource="{Binding SelectedProcess.Threads}" Height="200" HorizontalAlignment="Left">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Id" DisplayMemberBinding="{Binding Id}" Width="80"/>
+                        <GridViewColumn Header="Wait Reason" DisplayMemberBinding="{Binding WaitReason}" Width="105"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
         </StackPanel>
     </Grid>
 </UserControl>
