@@ -36,5 +36,23 @@
         </Style>
     </UserControl.Resources>
     <Grid>
+        <StackPanel>
+            <TextBlock>
+                <Run Text="Name: " Foreground="#F8F8F2" FontSize="14"/>
+                <Run Text="{Binding SelectedProcess.Name}" Foreground="#F8F8F2" FontSize="14"/>
+            </TextBlock>
+            <TextBlock>
+                <Run Text="ID: " Foreground="#F8F8F2" FontSize="14"/>
+                <Run Text="{Binding SelectedProcess.Id}" Foreground="#F8F8F2" FontSize="14"/>
+            </TextBlock>
+            <TextBlock>
+                <Run Text="Priority: " Foreground="#F8F8F2" FontSize="14"/>
+                <Run Text="{Binding SelectedProcess.PriorityString}" Foreground="#F8F8F2" FontSize="14"/>
+            </TextBlock>
+            <TextBlock>
+                <Run Text="Threads: " Foreground="#F8F8F2" FontSize="14"/>
+                <Run Text="{Binding SelectedProcess.ThreadsNumber}" Foreground="#F8F8F2" FontSize="14"/>
+            </TextBlock>
+        </StackPanel>
     </Grid>
 </UserControl>

@@ -1,4 +1,5 @@
 ﻿using Prism.Ioc;
+using Prism.Regions;
 using processes_list.Views;
 using System.Windows;
 
@@ -11,6 +12,8 @@ namespace processes_list
     {
         protected override Window CreateShell()
         {
+            var regionManager = Container.Resolve<IRegionManager>();
+            regionManager.RegisterViewWithRegion("MainRegion", typeof(ProcessesListView));
             return Container.Resolve<MainWindow>();
         }
 

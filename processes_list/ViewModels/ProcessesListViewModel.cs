@@ -22,6 +22,8 @@ namespace processes_list.ViewModels
         public ICommand StopRefreshingCommand { get; private set; }
         public ICommand SetRefreshIntervalCommand { get; private set; }
 
+        public ProcessDetailsViewModel ProcessDetailsViewModel { get; } = new ProcessDetailsViewModel();
+
         public ObservableCollection<ProcessModel> Processes
         {
             get => _processes;
@@ -56,7 +58,7 @@ namespace processes_list.ViewModels
         public ProcessModel SelectedProcess
         {
             get => _selectedProcess;
-            set => SetProperty(ref _selectedProcess, value);
+            set => SetProperty(ref _selectedProcess, value, () => ProcessDetailsViewModel.Update(value));
         }
 
         public ProcessesListViewModel()
