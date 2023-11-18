@@ -18,6 +18,7 @@ namespace processes_list.Models
         public ProcessPriorityClass Priority { get; set; }
         public string PriorityString { get; set; }
         public int ThreadsNumber { get; set; }
+        public string StartTimeString { get; set; }
         public ProcessThreadCollection Threads { get; set; }
 
         public ProcessModel(System.Diagnostics.Process process)
@@ -25,6 +26,7 @@ namespace processes_list.Models
             Process = process;
             Id = process.Id;
             Name = process.ProcessName;
+            
             try
             {
                 Priority = process.PriorityClass;
@@ -33,6 +35,15 @@ namespace processes_list.Models
             catch (Exception e)
             {
                 PriorityString = e.Message;
+            }
+            try
+            {
+                var startTime = process.StartTime;
+                StartTimeString = startTime.ToString();
+            }
+            catch (Exception e)
+            {
+                StartTimeString = e.Message;
             }
             ThreadsNumber = process.Threads.Count;
             Threads = process.Threads;

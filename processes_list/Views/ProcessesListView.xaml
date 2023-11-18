@@ -45,13 +45,18 @@
         <TextBox Text="{Binding ProcessFilter, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="0,130,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="185" Height="20"/>
         <views:ProcessDetailsView DataContext="{Binding ProcessDetailsViewModel}" Margin="0,150,340,0" />
         <ListView Name="ProcessesList" 
-          ItemsSource="{Binding Processes}"
-          SelectionMode="Single"
-          Grid.Column="0"
-          SelectedItem="{Binding SelectedProcess}"
-          GridViewColumnHeader.Click="OnHeaderClick"
-          Background="#44475A"
-          Foreground="#F8F8F2" Margin="200,0,0,0">
+            ItemsSource="{Binding Processes}"
+            SelectionMode="Single"
+            Grid.Column="0"
+            SelectedItem="{Binding SelectedProcess}"
+            GridViewColumnHeader.Click="OnHeaderClick"
+            Background="#44475A"
+            Foreground="#F8F8F2" Margin="200,0,0,0">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="ToolTip" Value="{Binding StartTimeString, StringFormat='Start Time: {0}'}"/>
+                </Style>
+            </ListView.ItemContainerStyle>
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="ID" DisplayMemberBinding="{Binding Id}" />
