@@ -61,6 +61,7 @@
                     </GridView>
                 </ListView.View>
             </ListView>
+            <Button Command="{Binding KillCommand}" Style="{StaticResource ButtonStyle}" HorizontalAlignment="Left" Foreground="#BD93F9" Content="Kill" Height="20" Width="185"/>
         </StackPanel>
     </Grid>
 </UserControl>
