@@ -16,7 +16,7 @@ namespace processes_list.ViewModels
     {
         private Timer _refreshTimer;
         private ObservableCollection<ProcessModel> _processes;
-        private string _textBoxContent;
+        private string _refreshIntervalTextBoxContent;
         private string _processFilter;
         private ProcessModel _selectedProcess;
 
@@ -33,13 +33,13 @@ namespace processes_list.ViewModels
             set => SetProperty(ref _processes, value);
         }
 
-        public string TextBoxContent
+        public string RefreshIntervalTextBoxContent
         {
-            get { return _textBoxContent; }
+            get { return _refreshIntervalTextBoxContent; }
             set
             {
-                _textBoxContent = value;
-                RaisePropertyChanged(nameof(TextBoxContent));
+                _refreshIntervalTextBoxContent = value;
+                RaisePropertyChanged(nameof(RefreshIntervalTextBoxContent));
             }
         }
 
@@ -67,8 +67,8 @@ namespace processes_list.ViewModels
             StopRefreshingCommand = new DelegateCommand(() => _refreshTimer.Stop());
             SetRefreshIntervalCommand = new DelegateCommand(() =>
             {
-                Debug.WriteLine($"[DEBUG] Setting processes refresh interval to {TextBoxContent}s");
-                if (int.TryParse(TextBoxContent, out int parsedInterval))
+                Debug.WriteLine($"[DEBUG] Setting processes refresh interval to {RefreshIntervalTextBoxContent}s");
+                if (int.TryParse(RefreshIntervalTextBoxContent, out int parsedInterval))
                 {
                     int _refreshIntervalInSeconds = parsedInterval * 1000;
                     _refreshTimer.Interval = _refreshIntervalInSeconds;
